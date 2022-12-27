@@ -1,14 +1,16 @@
+import json
 from model.entity import Task
-from database.conexion import execute, commit
+from database.conexion import mysql
 
 class taskRepository:
     def read(self) -> list:
         sql = """
-            SELECT * 
-            FROM task_api
+            SELECT *
+            FROM tasks
         """
-        print (sql)
-        cursor = execute(sql)
+        
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql)
         tareas = cursor.fetchall()
         cursor.close()
         
@@ -16,9 +18,8 @@ class taskRepository:
         for tarea in tareas:
             mostrarTareas.append(Task(
                 nombre = tarea[1],
-                completada = tarea[4],
-                id = tarea[0],
                 fecha = tarea[2],
+                completada = tarea[4],
                 descripcion = tarea[3]))
         return mostrarTareas
           
@@ -26,10 +27,11 @@ class taskRepository:
     def readOne(self, id: int) -> Task:
         sql = f"""
             SELECT * 
-            FROM task_api
+            FROM tasks
             WHERE id = {id}
         """
-        cursor = execute(sql)
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql)
         tarea = cursor.fetchone()
         cursor.close()
         
@@ -38,34 +40,37 @@ class taskRepository:
         
     def create(self, task:Task) -> None:
         sql = f"""
-            INSERT INTO task_api (nombre, fecha, descripcion, completada)
+            INSERT INTO tasks (nombre, fecha, descripcion, completada)
             VALUES ('{task.nombre}', {task.fecha}, '{task.descripcion}', {task.completada})
         """
-        cursor = cursor.execute(sql)
-        commit()
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql)
+        mysql.connection.commit()
         cursor.close()
     
     
     def update(self, task: Task) -> None:
         sql = f"""
-            UPDATE task_api
+            UPDATE tasks
             SET nombre = '{task.nombre}',
-            completada = '{task.completada},
-            fecha = {task.fecha}
+            fecha = {task.fecha},
+            completada = {task.completada},
             descripcion = '{task.descripcion}'
             WHERE id = {task.id}
         """
-        cursor = cursor.execute(sql)
-        commit()
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql)
+        mysql.connection.commit()
         cursor.close()
         
         
     def delete(id: int) -> None:
         sql = f"""
             DELETE
-            FROM task_api
+            FROM tasks
             WHERE id = {id}
         """
-        cursor = cursor.execute(sql)
-        commit()
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql)
+        mysql.connection.commit()
         cursor.close()

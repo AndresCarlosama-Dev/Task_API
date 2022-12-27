@@ -15,20 +15,24 @@ def readOne(id):
 
 @app.route('/api/tasks', methods=['POST'])
 def create():
-    # nombre = request.json["nombre"]
-    # descripcion = request.json["descripcion"]
-    # completada = request.json["completada"]
+    nombre = request.json["nombre"]
+    fecha = request.json["fecha"]
+    completada = request.json["completada"]
+    descripcion = request.json["descripcion"]
     
-    task = Task()
-    repository.create()
+    task = Task(nombre, fecha, completada, descripcion = descripcion)
+    repository.create(task)
+    return "", 201
     
 @app.route('/api/tasks/<id>', methods=['PUT'])
 def update(id):
-    # nombre = request.json["nombre"]
-    # descripcion = request.json["descripcion"]
-    # completada = request.json["completada"]
+    id = id
+    nombre = request.json["nombre"]
+    fecha = request.json["fecha"]
+    completada = request.json["completada"]
+    descripcion = request.json["descripcion"]
     
-    task = Task()
+    task = Task(id, nombre, fecha, completada, descripcion = descripcion)
     repository.update(task)
     
 @app.route('/api/tasks/<id>', methods=['DELETE'])

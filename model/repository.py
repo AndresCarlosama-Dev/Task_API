@@ -14,15 +14,21 @@ class taskRepository:
         tareas = cursor.fetchall()
         cursor.close()
         
-        mostrarTareas = list()
+        mostrarTareas = list() #Lista de objetos Task
         for tarea in tareas:
             mostrarTareas.append(Task(
+                id = tarea[0],
                 nombre = tarea[1],
                 fecha = tarea[2],
                 completada = tarea[4],
                 descripcion = tarea[3]))
-        return mostrarTareas
-          
+        
+        jsonTask = list() #Lista de json
+        for objDicc in mostrarTareas:
+            jsonTask.append(objDicc.toDict())
+        
+        return jsonTask, 200
+            
        
     def readOne(self, id: int) -> Task:
         sql = f"""
@@ -35,7 +41,14 @@ class taskRepository:
         tarea = cursor.fetchone()
         cursor.close()
         
-        return tarea        
+        objTarea = (Task(
+            id = tarea[0],
+            nombre = tarea[1],
+            fecha = tarea[2],
+            completada = tarea[4],
+            descripcion = tarea[3]))
+        
+        return objTarea.__dict__
         
         
     def create(self, task:Task) -> None:

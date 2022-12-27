@@ -22,7 +22,7 @@ def create():
     
     task = Task(nombre, fecha, completada, descripcion = descripcion)
     repository.create(task)
-    return "", 201
+    return "{'msg' : 'Tarea agregada'}", 201
     
 @app.route('/api/tasks/<id>', methods=['PUT'])
 def update(id):

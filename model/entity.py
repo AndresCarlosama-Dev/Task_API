@@ -6,12 +6,12 @@ class Task:
         self.id = id
         self.descripcion = descripcion
         
-    def toDict(self):
-        return{
-            "id": self.id,
-            "nombre": self.nombre,
-            "fecha": self.fecha,
-            "completada": self.completada,
-            "descripcion": self.descripcion
-        }
+    # def toDict(self):
+    #     return{
+    #         "id": self.id,
+    #         "nombre": self.nombre,
+    #         "fecha": self.fecha,
+    #         "completada": self.completada,
+    #         "descripcion": self.descripcion
+    #     }
         

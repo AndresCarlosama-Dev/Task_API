@@ -23,11 +23,11 @@ class taskRepository:
                 completada = tarea[4],
                 descripcion = tarea[3]))
         
-        jsonTask = list() #Lista de json
+        jsonTask = list() #Lista de json/dict
         for objDicc in mostrarTareas:
-            jsonTask.append(objDicc.toDict())
+            jsonTask.append(objDicc.__dict__)
         
-        return jsonTask, 200
+        return jsonTask
             
        
     def readOne(self, id: int) -> Task:
@@ -66,10 +66,10 @@ class taskRepository:
         sql = f"""
             UPDATE tasks
             SET nombre = '{task.nombre}',
-            fecha = {task.fecha},
-            completada = {task.completada},
-            descripcion = '{task.descripcion}'
-            WHERE id = {task.id}
+                fecha = {task.fecha},
+                descripcion = '{task.descripcion}',
+                completada = {task.completada}
+            WHERE id = {task.id};
         """
         cursor = mysql.connection.cursor()
         cursor.execute(sql)

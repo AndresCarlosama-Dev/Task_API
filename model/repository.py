@@ -41,6 +41,9 @@ class taskRepository:
         tarea = cursor.fetchone()
         cursor.close()
         
+        if tarea == None:
+            raise Exception(f"No se encontro ninguna tarea con el id {id}")
+        
         objTarea = (Task(
             id = tarea[0],
             nombre = tarea[1],
@@ -73,16 +76,22 @@ class taskRepository:
         """
         cursor = mysql.connection.cursor()
         cursor.execute(sql)
+        tareaUpdate = cursor.rowcount
         mysql.connection.commit()
         cursor.close()
+        print(tareaUpdate)
+        
+        if tareaUpdate == 0:
+            raise Exception(f"No se ha podido actualizar la tarea con el id {task.id}")
         
         
-    def delete(id: int) -> None:
+    def delete(self, id: int) -> None:    
         sql = f"""
             DELETE
             FROM tasks
-            WHERE id = {id}
+            WHERE id = {id};
         """
+
         cursor = mysql.connection.cursor()
         cursor.execute(sql)
         mysql.connection.commit()
